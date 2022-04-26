@@ -1,0 +1,75 @@
+
+<link rel="stylesheet" href="css/boardwrite.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<meta charset="UTF-8">
+<div class="container1 py-1">
+	<form id="frm">
+		<table id="tableFrame" class="table table-bordered">
+			<tr>
+                <td>
+                    작성자
+                </td>
+				<td id="name">
+				userName
+				</td>
+				
+			</tr>
+            <tr id="titleFrame">
+                <td>제목</td>
+                <td id="titlerow">
+                    <textarea class="ml-4" id="title" name="title"></textarea>
+                </td>
+            </tr>
+			<tr id="tr4">
+                <td>내용</td>
+				<td><textarea class="ml-4" id="content" name="content"></textarea></td>
+			</tr>
+			<tr id="tr5">
+                <td>태그</td>
+				<td><textarea class="ml-4" id="tag" name="tag"></textarea></td>
+			</tr>
+			<tr id="tr6">
+				<td id="td6"><button  class="btn btn-primary postFeed" type="button">작성</button></td>
+			</tr>			
+		</table>
+        <input type="hidden" id="userSeq" name="userSeq">
+
+        
+	</form>
+</div>
+
+<script type="text/javascript">
+let ses = JSON.parse(sessionStorage.getItem("login"));
+$("#userSeq").val(ses.seq);
+$("#name").html(ses.userName);
+//let getFilename = document.getElementById('image').files[0].name;
+//document.getElementById('image').files[0].name;
+//$("#image").files[0].name;
+$(document).ready(function(){
+    //alert(JSON.stringify(ses));
+});
+
+
+
+
+$(".postFeed").on("click", function(){
+
+	$.ajax({
+		url:"http://localhost:3000/Board/create",
+		type: "post",
+		data: {"userSeq":$("#userSeq").val(), "title":$("#title").val(),"content":$("#content").val(), 
+			"tag":$("#tag").val()},
+		success : function(msg) {
+				alert(msg);
+				alert('성공적으로 포스팅 하셨습니다.');
+				location.href ="main.html";
+			},
+		error : function() {
+				alert('error');
+		}
+	});
+});
+
+</script>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+            <table class="justify-content-center align-items-center table-striped  text-center">
+                <col width="100px"><col width="800px">
+                <tr style="height: 50px;"><th>제목</th><td id="title"></td></tr>
+                <tr><th>작성자</th><td id="userName"></td></tr>
+                <tr><th>조회수</th><td id="readcount"></td></tr>
+                <tr style="height: 200px;"><th>내용</th><td id="content"></td></tr>
+                <tr><th>작성일</th><td id="regDate"></td></tr>
+            </table>
+            
+        </div>
+        <div class="container align-items-center justify-content-center d-flex flex-column">
+            <button id="update" class="btn btn-primary" visivility="hidden">글 수정하기</button>
+            <button id="delete" class="btn btn-danger" visivility="hidden">글 삭제하기</button>
+        </div>
+        <script type="text/javascript">
+            const ses = JSON.parse(sessionStorage.getItem("login"));
+            $(document).ready(function(){
+                //alert(JSON.stringify(ses));
+                //alert($("userName").html());
+                if(ses.userName == $("#userName").html()){
+                    $("#update").show();
+                    $("#delete").show();
+                }
+                
+            });
+            const urlParameter = window.location.search;
+            const seq = urlParameter.split("=")[1];
+            //alert(seq);
+            $.ajax({
+                async:false,
+                url:"http://localhost:3000/Board/detail",
+                type: "get",
+                data: { "seq": seq},
+                success : function(response) {
+                        $("#title").html(response.title);
+                        $("#userName").html(response.username);
+                        $("#readcount").html(response.readcount);
+                        $("#content").html(response.content);
+                        $("#regDate").html(response.regDate);
+                    },
+                error : function() {
+                        alert('error');
+                }
+            });
+        </script>
+    </body>
+</html>

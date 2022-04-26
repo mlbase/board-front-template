@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body width= "100%" height="100%">
+	<form action="index.html" method="post" class="loginForm">
+		<h2>Login</h2>
+		<div class="textForm">
+			<input type="text" id="id" placeholder="아이디 입력">
+		</div>
+		<div class="textForm">
+			<input type="password" id="pwd" placeholder="패스워드 입력">
+		</div>
+		<button type="button" id="login">로그인</button>
+		<div class="bottomText">
+			Don't you have ID? <a href="register.html">회원가입</a>
+		</div>
+	</form>
+	<script type="text/javascript">
+		/* 로그인 */
+		$("#login").click(function() {
+			$.ajax({
+				url : "http://localhost:3000/user/login",
+				type : "post",
+				data : {
+					'userId' : $("#id").val(),
+					'password' : $("#pwd").val()
+				},
+				dataType : 'JSON',
+				success : function(resp) {
+					//	alert('success');
+					//	alert(JSON.stringify(resp));
+
+					if (!resp.userName) {
+						alert("id나 password를 확인해 주십시오");
+					} else { // login 성공!
+						alert(resp.userName + "님 환영합니다");
+                        
+						// session에 저장 setAttribute( , ) getAttribute()
+						sessionStorage.setItem("login", JSON.stringify(resp)); // <- server에 저장하는 것은 아니다
+						location.href = "main.html";
+
+					}
+
+				},
+				error : function() {
+					alert('error');
+				}
+			});
+		});
+	</script>
+</body>
+</html>
