@@ -19,17 +19,18 @@
             
         </div>
         <div class="container align-items-center justify-content-center d-flex flex-column">
-            <button id="update" class="btn btn-primary" visivility="hidden">글 수정하기</button>
-            <button id="delete" class="btn btn-danger" visivility="hidden">글 삭제하기</button>
+            <button id="update" class="btn btn-primary" onclick="update()">글 수정하기</button>
+            <button id="delete" class="btn btn-danger" onclick="deleteit()">글 삭제하기</button>
         </div>
         <script type="text/javascript">
             const ses = JSON.parse(sessionStorage.getItem("login"));
             $(document).ready(function(){
+                let name = $("userName").html();
                 //alert(JSON.stringify(ses));
-                //alert($("userName").html());
-                if(ses.userName == $("#userName").html()){
-                    $("#update").show();
-                    $("#delete").show();
+                //alert(name);
+                if(ses.userName != $("#userName").html()){
+                    $("#update").hide();
+                    $("#delete").hide();
                 }
                 
             });
@@ -52,6 +53,8 @@
                         alert('error');
                 }
             });
+
+            
         </script>
     </body>
 </html>

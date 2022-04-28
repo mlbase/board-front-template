@@ -19,6 +19,7 @@
 		<tr align="center" id="board">
 			<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 		</tr>
+        <tbody id="table-body"></tbody>
     </table>
 </div>
 <div id="pagingNumber" class="mt-5 text-center">
@@ -44,7 +45,8 @@ function ceil(number){
 }
 
 function gotoPage(Pagenumber){
-
+    $("#table-body").empty();
+    $("#pagingNumber").empty();
 
     $.ajax({
         async:false,
@@ -64,39 +66,8 @@ function gotoPage(Pagenumber){
                     html += "<th>" + element.readcount + "</th></tr>";
                 });
                 //alert(html);
-                $("#board").after(html);
-			},
-		error : function() {
-				alert('error');
-		}
-    });
-}
-
-$(document).ready(function() {
-	let ses = JSON.parse(sessionStorage.getItem("login"));
-    if(ses.userName != null){
-        $("#writebtn").attr("type", null)
-    }
-
-    $.ajax({
-        async:false,
-        url:"http://localhost:3000/Board/list",
-		type: "get",
-		data: {Pagenumber:currentPage},
-		success : function(list) {
-				//alert(JSON.stringify(list));
-                let html = "";
-                $.each(list, function(index, element) {
-                    //alert(JSON.stringify(element));
-                    index += 1;
-                    html += "<tr><th>" + index + "</th>"
-                    html += "<th><a href='boarddetail.html?seq="+element.seq +"'>" + element.title + "</a></th>";
-                    html += "<th>" + element.username + "</th>";
-                    html += "<th>" + element.regDate + "</th>";
-                    html += "<th>" + element.readcount + "</th></tr>";
-                });
-                //alert(html);
-                $("#board").after(html);
+                $("#table-body").html(html);
+                html = "";
 			},
 		error : function() {
 				alert('error');
@@ -112,7 +83,7 @@ $(document).ready(function() {
             const rowPerPage = 10;
             const maxPage = ceil(count/rowPerPage);
             for(i=1;i<maxPage+1;i++){
-                if(i == currentPage){
+                if(i == Pagenumber){
                     pageHtml += "<span>" + i +"</span>&nbsp&nbsp";
                 } else {
                     pageHtml += "<a class='link-info' onclick='gotoPage("+i+")'>" + i + "</a>&nbsp&nbsp";
@@ -125,7 +96,17 @@ $(document).ready(function() {
         error:function(){
             alert('error');
         }
-    })
+    });
+}
+
+$(document).ready(function() {
+	let ses = JSON.parse(sessionStorage.getItem("login"));
+    if(ses.userName != null){
+        $("#writebtn").attr("type", null)
+    }
+
+    gotoPage(currentPage);
+
 
 });
 
