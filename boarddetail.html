@@ -54,6 +54,24 @@
                 }
             });
 
+            function update(){
+                location.href = "boardupdate.html?seq="+seq;
+            }
+
+            function deleteit(){
+                $.ajax({
+                    url:"http://localhost:3000/Board/delete",
+                    type:"delete",
+                    data:  { "seq": seq},
+                    success: function(response) {
+                        alert(response);
+                        location.href="main.html";
+                    },
+                    error : function(){
+                        alert("error");
+                    }
+                })
+            }
             
         </script>
     </body>
